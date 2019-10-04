@@ -2,6 +2,7 @@ import style1 from '../assets/style-1.png'
 import style2 from '../assets/style-2.png'
 import style3 from '../assets/style-3.png'
 import style4 from '../assets/style-4.png'
+import style5 from '../assets/style-5.png'
 import html2canvas from 'html2canvas'
 export default {
   data () {
@@ -14,6 +15,7 @@ export default {
           style2,
           style3,
           style4,
+          style5
       ]
     }
   },
@@ -27,28 +29,27 @@ export default {
     build () {
       if (!this.avatar) {
         this.$message.error('请先上传头像')
-        return
       } else {
           html2canvas(document.getElementById("demo")).then(canvas => {
               document.getElementById('download').appendChild(canvas)
 
               canvas.toBlob(function (blob) {
-                  let reader = new window.FileReader();
+                  let reader = new window.FileReader()
 
                   reader.onloadend = function () {
-                      const data = reader.result;
+                      const data = reader.result
 
-                      var btnDownload = document.getElementById("btnDownload");
-                      btnDownload.download = 'avatar.png';
+                      var btnDownload = document.getElementById("btnDownload")
+                      btnDownload.download = 'avatar.png'
                       btnDownload.href = data
                       btnDownload.click()
-                  };
+                  }
 
-                  reader.readAsDataURL(blob);
+                  reader.readAsDataURL(blob)
               })
 
               this.$message('生成成功')
-          });
+          })
       }
     },
     handleChange (file) {
@@ -62,7 +63,7 @@ export default {
       reader.onloadend = () => {
         const data = reader.result
         this.avatar = data
-      };
+      }
 
       reader.readAsDataURL(file.raw)
     }
@@ -95,8 +96,13 @@ export default {
                 <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
                 <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
             </el-upload>
-            <el-button onClick={this.changeBorder} type="primary" plain>切换边框</el-button>
-            <el-button onClick={this.build} type="success" plain>生成图片</el-button>
+            
+            { this.avatar ? (
+              <div>
+                <el-button onClick={this.changeBorder} type="primary" plain>切换边框</el-button>
+                <el-button onClick={this.build} type="success" plain>生成图片</el-button>
+              </div>
+            ) : null}
         </div>
 
         <div id="download" style="display:none" />
